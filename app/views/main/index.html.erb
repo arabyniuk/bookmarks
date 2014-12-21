@@ -1,0 +1,16 @@
+<h1>Bookmarks</h1>
+
+<select>
+<% @lists.each do |list| %>
+  <option><%= list.name%></option>
+<% end %>
+</select>
+
+<ul>
+  <% @links.each do |link| %>
+    <li>
+      url: <%= link.url %><br/>
+      title: <%= link.title %>
+    </li>
+  <% end %>
+</ul>
