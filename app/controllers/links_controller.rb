@@ -1,13 +1,17 @@
 class LinksController < ApplicationController
   before_action :set_link, only: [:show, :edit, :update, :destroy]
-  skip_before_filter :set_current_link, only: [:new, :edit, :destroy]
-  before_filter :authenticate_user!, :set_current_link
+  #before_action :set_current_link
+  #before_action :authenticate_user!, only: [:index]
+  #skip_before_action :authenticate_user!, only: [:set_current_link]
+
 
   # GET /links
   # GET /links.json
   def index
-    @links = Link.all
-    @lists = List.all
+    if user_signed_in?
+      @links = Link.where(user_id: current_user.id)
+      @lists = List.where(user_id: current_user.id)
+    end
   end
 
   # GET /links/1
@@ -64,6 +68,42 @@ class LinksController < ApplicationController
     end
   end
 
+  def set_current_link
+    if user_signed_in?
+      @current_user_id = current_user.id
+    end
+    puts "------------------"
+    puts @current_user_id
+    path = request.original_fullpath.gsub(/^\//, "")
+    subdomain = request.subdomain
+    if !subdomain.empty? || !path.empty?
+      puts "----------------"
+      puts @current_user_id
+      unless subdomain.empty?
+        puts "---------------"
+        puts @current_user_id
+        list = List.where(name: subdomain, user_id: @current_user_id).first
+        if list.nil?
+           list = List.new({name: subdomain, user_id: @current_user_id})
+           list.save
+        end
+      end
+      unless path.empty?
+        begin
+          title = Mechanize.new.get(path).title
+        rescue Exception => e
+         flash[:notice] = e.message
+        end
+        path = path.gsub(/^(h.*?\/+)/, "")
+        link = Link.new({url: path, title: title, user_id: @current_user_id })
+        link.list_id = list.id unless subdomain.empty?
+        link.save
+        #WeeklyNotifier.received.deliver
+      end
+      redirect_to root_url
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_link
@@ -73,32 +113,6 @@ class LinksController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def link_params
       params.require(:link).permit(:url, :title, :list_id)
-    end
-
-    def set_current_link
-      path = request.original_fullpath.gsub(/^\//, "")
-      subdomain = request.subdomain
-      if !subdomain.empty? || !path.empty?
-        unless subdomain.empty?
-          list = List.where(name: subdomain).first
-          if list.nil?
-             list = List.new({name: subdomain})
-             list.save
-          end
-        end
-        unless path.empty?
-          begin
-            title = Mechanize.new.get(path).title
-          rescue Exception => e
-           flash[:notice] = e.message
-          end
-          path = path.gsub(/^(h.*?\/+)/, "")
-          link = Link.new({url: path, title: title})
-          link.list_id = list.id unless subdomain.empty?
-          link.save
-        end
-        redirect_to root_url( subdomain: false )
-      end
     end
 
 end

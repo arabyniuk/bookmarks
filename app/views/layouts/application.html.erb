@@ -2,22 +2,62 @@
 <html>
 <head>
   <title>BookMarker</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div id="main-content">
+
+  <div class="header">
+    <div class="row">
+      <div class="col-md-6">
+         <h1 id="logo"><a href="/">Bookmarker</a></h1>
+      </div>
+      <div class="col-md-6">
+        <div id="main_menu">
+          <div class="collapse navbar-collapse" id="menu">
+            <ul class="nav navbar-nav pull-right">
+              <li>
+                <a href="#">tweeter</a>
+              </li>
+              <li class="active">
+                <% unless user_signed_in? %>
+                    <%= link_to 'Login', new_user_session_path %>
+                <% end %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= yield %>
+  <div class="hFooter"></div>
 
 
-<% if user_signed_in? %>
-    <p>Welcome <%= current_user.email %></p>
-  <%= link_to 'Logged In [click to logout]', destroy_user_session_path, :method => :delete %>
-<% else %>
-      <p>You are not signed in.</p>
-    <%= link_to 'Login', new_user_session_path %>
-<% end %>
 
-<%= yield %>
+
+
+
+
+
+</div>
+<div id="footer">
+  <ul class="nav pull-left">
+    <li>
+      <% if user_signed_in? %>
+        <%= link_to current_user.email, destroy_user_session_path, :method => :delete %>
+      <% end %>
+    </li>
+    <li>
+      <a href="#">
+        Notification
+      </a>
+    </li>
+  </ul>
+</div>
 
 </body>
 </html>

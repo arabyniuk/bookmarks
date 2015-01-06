@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks" }
+  #resources :users, :only => [:index, :show] do
+    #resources :lists, :shallow => true
+  #end
   get 'main/index'
 
   resources :links
@@ -9,9 +12,9 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   
-  get '*path', to: 'links#index'
+  get '*path', to: 'links#set_current_link'
   
-  get '/' => 'links#index', :constraints => { :subdomain => /.+/ }
+  get '/' => 'links#set_current_link', :constraints => { :subdomain => /.+/ }
 
   # You can have the root of your site routed with "root"
    root 'links#index'

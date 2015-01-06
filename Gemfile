@@ -27,6 +27,8 @@ gem 'spring',        group: :development
 gem 'pry'
 gem 'mechanize'
 gem 'devise'
+gem 'omniauth-twitter'
+
 # gem 'bcrypt', '~> 2.1.7'
 # Use unicorn as the app server
 

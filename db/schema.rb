@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141214121421) do
+ActiveRecord::Schema.define(version: 20150105193659) do
 
   create_table "links", force: true do |t|
     t.string   "url"
@@ -19,13 +19,19 @@ ActiveRecord::Schema.define(version: 20141214121421) do
     t.integer  "list_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
+
+  add_index "links", ["user_id"], name: "index_links_on_user_id"
 
   create_table "lists", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
+
+  add_index "lists", ["user_id"], name: "index_lists_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -40,6 +46,8 @@ ActiveRecord::Schema.define(version: 20141214121421) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "provider"
+    t.string   "uid"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
