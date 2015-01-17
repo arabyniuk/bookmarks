@@ -1,0 +1,33 @@
+<div class="header">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+         <h1 id="logo" data-no-turbolink><a href="/"><%= current_page?(root_url) ? 'Bookmaker' : 'Twitter' %></a></h1>
+      </div>
+      <div class="col-md-6">
+        <div id="main_menu">
+          <div class="collapse navbar-collapse" id="menu">
+            <ul class="nav navbar-nav pull-right">
+              <li data-no-turbolink>
+                <% if user_signed_in? %>
+                  <% if current_user.provider == 'twitter' %>
+                    <% if current_page?(root_url(subdomain: 'tweet')) %>
+		      <%= link_to 'Bookmaker', root_url(subdomain: false) %>
+		    <% else %>
+                      <%= link_to "twitter", root_url(subdomain: 'tweet')  %>
+		    <% end %>
+                  <% end %>
+                <% end %>
+              </li>
+              <li class="active">
+                <% unless user_signed_in? %>
+                    <%= link_to 'Login', class: 'login-modal-link' %>
+                <% end %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,91 +1,76 @@
 <% if user_signed_in? %>
+
   <div class="content">
-  <div class="pure-g">
-    <select>
+    <span>Category: </span>
+    <select id="search-list" name="list">
+      <option></option>
       <% @lists.each do |list| %>
-        <option><%= list.name%></option>
+        <option><%= list.name %></option>
       <% end %>
     </select>
-  </div>
-  </div>
-  
-  <table>
-    <thead>
-      <tr>
-        <th>Url</th>
-        <th>Title</th>
-        <th>List</th>
-        <th colspan="3"></th>
-      </tr>
-    </thead>
-  
-    <tbody>
-      <% @links.each do |link| %>
+
+    <table class="table table-bordered responsive-table table-links">
+      <thead>
         <tr>
-          <td><%= link.url %></td>
-          <td><%= link.title %></td>
-          <td><%= link.list_id %></td>
-          <td><%= link_to 'Show', link %></td>
-          <td><%= link_to 'Edit', edit_link_path(link) %></td>
-          <td><%= link_to 'Destroy', link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <th>Title</th>
+          <th>List</th>
+          <th>Date</th>
+          <th>Buttons</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
-  <br>
+      </thead>
+      <tbody>
+        <% @links.each do |link| %>
+        <tr>
+          <td><a href="http://<%= link.url %>" style="background-image:url(https://www.google.com/s2/favicons?domain=<%= link.url.match(/^.*\.[a-z]{2,5}/).to_s %>)" target="_blank"><%= link.title %></a></td>
+          <td><%= link.list.name if link.list %></td>
+          <td><%= link.created_at.strftime("%d %b %y") %></td>
+          <td><%= link_to 'Edit', edit_link_path(link) %> | <%= link_to 'Destroy', link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
 <%= link_to 'New Link', new_link_path %>
+
+<script>
+$('table').dynatable({
+  table: {
+    defaultColumnIdStyle: 'underscore'
+  },
+  features: {
+  },
+  inputs: {
+    queries: $('#search-list')
+  }
+});
+</script>
+
 <% else %>
-  <p>Some content</p>
+  <div class="projects isotope" style="position: relative; overflow: hidden; display: block; height: 894px;">
+    <div class="col-xs-12 col-sm-6 col-md-3 element category01 isotope-item" data-category="category01" style="position: absolute; left: 0px; top: 0px; transform: translate3d(0px, 0px, 0px); opacity: 1;">
+      <div class="hover_img">
+        <a href="img/portfolio/1.jpg" rel="prettyPhoto[portfolio1]">
+	<%= image_tag("1.jpg") %>
+        </a>
+     </div>  
+         <div class="item_description">
+            <a href="single_portfolio.html"><span>Item Link</span></a><br>
+      				item description
+         </div>                                    
+     </div>
+  </div>
+
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-      Launch demo modal
-    </button>
+  <button type="button" class="btn btn-primary btn-lg signup-modal-link">
+    Register
+  </button>
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body">
-                   
-              <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-                <%= devise_error_messages! %>
-              
-                <div class="field">
-                  <%= f.label :email %><br />
-                  <%= f.email_field :email, autofocus: true %>
-                </div>
-              
-                <div class="field">
-                  <%= f.label :password %>
-                  <% if @validatable %>
-                  <em>(<%= @minimum_password_length %> characters minimum)</em>
-                  <% end %><br />
-                  <%= f.password_field :password, autocomplete: "off" %>
-                </div>
-              
-                <div class="field">
-                  <%= f.label :password_confirmation %><br />
-                  <%= f.password_field :password_confirmation, autocomplete: "off" %>
-                </div>
-              
-                <div class="actions">
-                  <%= f.submit "Sign up" %>
-                  <%= link_to "Sign up with Twitter", user_omniauth_authorize_path(:twitter) %>
-                </div>
-              <% end %>          
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary btn-lg login-modal-link">
+    Login
+  </button>
 
-<% end  %>
+  <%= render 'modal' %>
 
+<% end %>

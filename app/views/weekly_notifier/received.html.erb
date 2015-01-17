@@ -1,5 +1,16 @@
-<h1>WeeklyNotifier#received</h1>
+<h1>Bookmarks</h1>
 
-<p>
-  <%= @greeting %>, find me in app/views/weekly_notifier/received.html.erb
-</p>
+<br>
+<hr>
+
+<h2>
+  <%= @links.size %> new bookmarks
+</h2>
+
+<% @links.each do |link| %>
+  <a href="http://<%= link.url %>" target="_blank" style="font-family: Tahoma, Arial, Helvetica, sans-serif; font-size: 14px; text-decoration:underline;">
+  <font face="Tahoma, Arial, Helvetica, sans-serif" style="font-size:14px;" size="3">
+    <%= link.title %>
+  </font>
+  </a><br>
+<% end %>

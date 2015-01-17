@@ -12,6 +12,10 @@
  *
  *= require_tree .
  *= require_self
+ *= require bootstrap.min
+ *= require theme
+ *= require timeline
+ *= require jquery.dynatable
  */
 
 html,
@@ -29,4 +33,29 @@ body {
 #footer {
   height: 70px;
   margin-top: -70px;
+}
+
+.extra-vertical-space {
+  padding: 40px 0;
+}
+
+#logo {
+  padding-top: 5px;
+  a {
+    color: #fff;
+  }
+}
+
+.auth-modal {
+  .modal-body {
+    input[type=text], 
+    input[type=password],
+    input[type=email] {
+      width: 100%;
+    }
+  }
+}
+
+.h-modal-body {
+  padding: 0 100px;
 }

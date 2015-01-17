@@ -1,0 +1,21 @@
+<div class="inner_content">
+  <div class="pad45"></div>
+
+  <% if @tweets.empty? %>
+    <p>There are not tweets in order</p>
+  <% else %>
+    <div class="main fadeinup animated fadeInUp">
+    <ul class="cbp_tmtimeline">
+    <% @tweets.each do |tweet| %>
+      <li <%= 'class=yellow' unless tweet.status %>>
+      	<time class="cbp_tmtime"><span><%= tweet.created_at.strftime("%d %b %y") %></span></time>
+      	<div class="cbp_tmicon"><i class="fa <%= tweet.status ? 'fa-check-square' : 'fa-spinner' %>"></i></div>
+      	<div class="cbp_tmlabel" style="">
+      	  <%= tweet.body %>
+      	</div>
+      </li>
+    <% end %>
+    </ul>
+    </div>
+  <% end %>
+</div>

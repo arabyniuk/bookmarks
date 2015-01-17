@@ -1,23 +1,32 @@
+require 'subdomain'
 Rails.application.routes.draw do
-  devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks" }
-  #resources :users, :only => [:index, :show] do
-    #resources :lists, :shallow => true
-  #end
+
+  devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
+  
   get 'main/index'
 
   resources :links
-
   resources :lists
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   
-  get '*path', to: 'links#set_current_link'
-  
-  get '/' => 'links#set_current_link', :constraints => { :subdomain => /.+/ }
+  #  get '*path', to: 'links#set_current_link'
+    
+  constraints(Subdomain) do
+    get '/', to: 'links#set_current_link'
+    get '*path', to: 'links#set_current_link'
+  end
+
+  #get '/' => 'twitter#index', :constraints => { :subdomain => 'tweet' }
+
+  constraints(subdomain: 'tweet') do
+    get '/', to: 'twitter#index'
+    get '*path', to: 'twitter#index'
+  end
 
   # You can have the root of your site routed with "root"
-   root 'links#index'
+  root 'links#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -30,6 +39,7 @@ Rails.application.routes.draw do
 
   # Example resource route with options:
   #   resources :products do
+
   #     member do
   #       get 'short'
   #       post 'toggle'

@@ -70,40 +70,37 @@ class LinksController < ApplicationController
 
   def set_current_link
     if user_signed_in?
-      @current_user_id = current_user.id
-    end
-    puts "------------------"
-    puts @current_user_id
-    path = request.original_fullpath.gsub(/^\//, "")
-    subdomain = request.subdomain
-    if !subdomain.empty? || !path.empty?
-      puts "----------------"
-      puts @current_user_id
-      unless subdomain.empty?
-        puts "---------------"
-        puts @current_user_id
-        list = List.where(name: subdomain, user_id: @current_user_id).first
-        if list.nil?
-           list = List.new({name: subdomain, user_id: @current_user_id})
-           list.save
+      WeeklyNotifier.received(current_user).deliver
+      path = request.original_fullpath.gsub(/^\//, "")
+      subdomain = request.subdomain
+      if !subdomain.empty? || !path.empty?
+        unless subdomain.empty?
+          list = List.where(name: subdomain, user_id: current_user.id).first
+          if list.nil?
+             list = List.new({name: subdomain, user_id: current_user.id})
+             list.save
+          end
         end
-      end
-      unless path.empty?
-        begin
-          title = Mechanize.new.get(path).title
-        rescue Exception => e
-         flash[:notice] = e.message
+        unless path.empty?
+          begin
+            title = Mechanize.new.get(path).title
+          rescue Exception => e
+            flash[:notice] = e.message
+          end
+          path = path.gsub(/^(h.*?\/+)/, "")
+          link = Link.new({url: path, title: title, user_id: current_user.id })
+          link.list_id = list.id unless subdomain.empty?
+          link.save
+          #WeeklyNotifier.delay(run_at: 5.minutes.from_now).received(current_user)
         end
-        path = path.gsub(/^(h.*?\/+)/, "")
-        link = Link.new({url: path, title: title, user_id: @current_user_id })
-        link.list_id = list.id unless subdomain.empty?
-        link.save
-        #WeeklyNotifier.received.deliver
+        redirect_to root_url(subdomain: false)
       end
-      redirect_to root_url
+    else
+      flash[:notice] = "You are not authorized for this action."
+      redirect_to root_url(subdomain: false)
     end
   end
-
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_link

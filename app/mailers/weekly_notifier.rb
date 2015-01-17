@@ -6,9 +6,9 @@ class WeeklyNotifier < ActionMailer::Base
   #
   #   en.weekly_notifier.received.subject
   #
-  def received
+  def received(user)
     @greeting = "Hi"
-
-    mail to: "abalkonskiy@gmail.com"
+    @links = user.links.last_week
+    mail(to: user.email, subject: "hello world!!")
   end
 end

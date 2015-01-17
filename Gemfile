@@ -28,6 +28,8 @@ gem 'pry'
 gem 'mechanize'
 gem 'devise'
 gem 'omniauth-twitter'
+gem 'twitter'
+gem 'delayed_job_active_record'
 
 # gem 'bcrypt', '~> 2.1.7'
 # Use unicorn as the app server

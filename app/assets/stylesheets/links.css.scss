@@ -1,3 +1,29 @@
 // Place all the styles related to the links controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.table-links {
+  tr td:first-child {
+    a { 
+      background-repeat: no-repeat;
+      padding-left: 20px;
+    }
+  }
+
+  th:first-child {
+    a { padding-left: 20px; }
+  }
+  thead {
+    a {
+      color: #fff;
+    }
+  }
+  tbody {
+    tr {
+      td:first-child {
+        a { color: #555;}
+        a:hover { color: #000; }
+      }
+    }
+  }
+}
