@@ -10,11 +10,10 @@ class User < ActiveRecord::Base
 
 
   def self.from_omniauth(auth)
-    user = find_or_create_by(uid: auth.uid, provider: auth.provider)
-    user.oauth_token = auth['credentials']['token']
-    user.oauth_secret = auth['credentials']['secret']
-    user.save!
-    user
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.provider = auth.provider
+      user.uid = auth.uid
+    end
   end
 
   def self.new_with_session(params, session)

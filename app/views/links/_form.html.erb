@@ -12,9 +12,9 @@
   </div>
   <div class="field">
     <%= f.label :list_id %><br>
-    <%= f.number_field :list_id %>
+    <%= f.collection_select :list_id, current_user.lists, :id, :name  %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'btn default' %>
   </div>
 <% end %>

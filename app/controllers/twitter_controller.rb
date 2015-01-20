@@ -2,19 +2,15 @@ class TwitterController < ApplicationController
   layout 'twitter'
 
   def index
-    unless user_signed_in? || current_user.provider == 'twitter'
-      error
-    else
-      @tweets = Tweet.order('created_at DESC').limit(20)
-      tweet
-    end
+      if user_signed_in? && current_user.provider == 'twitter'
+        @tweets = Tweet.order('created_at DESC').limit(20)
+        tweet
+      else 
+        flash[:notice] = 'You are not authorized as twitter user' 
+        redirect_to root_url(subdomain: false)
+      end
   end
 
-  def error
-    flash[:notice] = 'You are not authorized as twitter user' 
-    redirect_to root_url(subdomain: false)
-  end
-  
   def tweet
     original_path = URI.decode(request.original_fullpath.gsub(/^\//, ""))
     unless original_path.empty?
