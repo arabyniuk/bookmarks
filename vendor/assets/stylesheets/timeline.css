@@ -31,7 +31,7 @@
 	position: absolute;
 }
 .cbp_tmtimeline > li .cbp_tmtime span { display: block; text-align: left; }
-.cbp_tmtimeline > li .cbp_tmtime span:last-child { font-size: 1.8em; }
+.cbp_tmtimeline > li .cbp_tmtime span:last-child { font-size: 1.5em; }
 
 /* Right content */
 .cbp_tmtimeline > li .cbp_tmlabel {

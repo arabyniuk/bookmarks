@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150115150020) do
+ActiveRecord::Schema.define(version: 20150122132726) do
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 20150115150020) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
-    t.boolean  "status",     default: true
+    t.integer  "delayed_job_id"
   end
 
   add_index "tweets", ["user_id"], name: "index_tweets_on_user_id"

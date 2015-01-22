@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
   
   #  get '*path', to: 'links#set_current_link'
-  get '*path', to: 'links#set_current_link'
+  #get '*path', to: 'links#set_current_link'
     
   constraints(Subdomain) do
     get '/', to: 'links#set_current_link'
@@ -21,13 +21,15 @@ Rails.application.routes.draw do
 
   #get '/' => 'twitter#index', :constraints => { :subdomain => 'tweet' }
 
-  #constraints(subdomain: 'tweet') do
+  constraints(subdomain: 'tweet') do
     #get '/', to: 'twitter#index'
     #get '*path', to: 'twitter#index'
-  #end
+    resources :twitter
+  end
 
   get '*path', to: 'twitter#index', constraints: { subdomain: 'tweet' }
   get '/', to: 'twitter#index', constraints: { subdomain: 'tweet' }
+  
   # You can have the root of your site routed with "root"
   root 'links#index'
 

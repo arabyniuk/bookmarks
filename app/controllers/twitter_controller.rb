@@ -10,6 +10,16 @@ class TwitterController < ApplicationController
         redirect_to root_url(subdomain: false)
       end
   end
+  
+  def destroy
+    @tweet = Tweet.find(params[:id])
+    @delayed_job_id = @tweet.delayed_job_id
+    Delayed::Job.find(@delayed_job_id).delete
+    @tweet.destroy
+    respond_to do |format|
+      format.js
+    end
+  end
 
   def tweet
     original_path = URI.decode(request.original_fullpath.gsub(/^\//, ""))
@@ -17,16 +27,16 @@ class TwitterController < ApplicationController
       path = original_path.gsub(/\&[d]=[0-9]*/, "")
       delay = original_path.match(/\&[d]=[0-9]*/)
       if (!path.nil? && delay.nil?)
-        tweet = Tweet.new({body: path, user_id: current_user.id})
+        tweet = Tweet.new({body: path, user_id: current_user.id, delay: Time.now})
         tweet.save
-        #current_user.twitter.update(path)
+        current_user.twitter.update(path)
         redirect_to root_url(subdomain: 'tweet')
       elsif !path.nil? && !delay.nil?
         delay = delay.to_s.scan(/\d+$/).first.to_i
-        tweet = Tweet.new({body: path, user_id: current_user.id, status: false})
+        job = current_user.twitter.delay(run_at: delay.minutes.from_now).update(path)
+        tweet = Tweet.new({body: path, user_id: current_user.id, delay: Time.now + delay.minutes, delayed_job_id: job.id})
         tweet.save
-        #current_user.twitter.delay(run_at: delay.minutes.from_now).update(path).update_tweet(tweet)
-        #tweet.delay(run_at: delay.minutes.from_now).update_attribute(:status, true)
+        redirect_to root_url(subdomain: 'tweet')
       end
     end 
   end

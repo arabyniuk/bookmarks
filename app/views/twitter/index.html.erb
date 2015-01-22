@@ -7,11 +7,16 @@
     <div class="main fadeinup animated fadeInUp">
     <ul class="cbp_tmtimeline">
     <% @tweets.each do |tweet| %>
-      <li <%= 'class=yellow' unless tweet.status %>>
-      	<time class="cbp_tmtime"><span><%= tweet.created_at.strftime("%d %b %y") %></span></time>
-      	<div class="cbp_tmicon"><i class="fa <%= tweet.status ? 'fa-check-square' : 'fa-spinner' %>"></i></div>
-      	<div class="cbp_tmlabel" style="">
+        <% if tweet.delay > Time.now %>
+          <li class="yellow delayed-<%= tweet.delayed_job_id %>">
+        <%else%>
+          <li>
+        <%end%>
+      	<time class="cbp_tmtime"><span><%= tweet.delay > Time.now ? "left #{Integer((tweet.delay - Time.now)/ 60)} minutes to tweet" : tweet.delay.strftime("%d %b, at %I:%M%p") %></span></time>
+      	<div class="cbp_tmicon"><i class="fa <%= tweet.delay > Time.now ? 'fa-spinner' : 'fa-check-square' %>"></i></div>
+      	<div class="cbp_tmlabel">
       	  <%= tweet.body %>
+          <% if tweet.delay > Time.now %><%= link_to "<i class='fa fa-times-circle fa-lg'></i>".html_safe, twitter_path(tweet.id), remote: true, method: :delete %><% end %>
       	</div>
       </li>
     <% end %>

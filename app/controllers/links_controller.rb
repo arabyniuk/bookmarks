@@ -70,7 +70,7 @@ class LinksController < ApplicationController
 
   def set_current_link
     if user_signed_in?
-      WeeklyNotifier.received(current_user).deliver
+      #WeeklyNotifier.received(current_user).deliver
       path = request.original_fullpath.gsub(/^\//, "")
       subdomain = request.subdomain
       if !subdomain.empty? || !path.empty?

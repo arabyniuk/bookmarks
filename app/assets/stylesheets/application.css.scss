@@ -59,3 +59,30 @@ body {
 .h-modal-body {
   padding: 0 100px;
 }
+
+.centered {
+  text-align: center;
+}
+
+.righted {
+  text-align: right;
+}
+
+.lefted {
+  text-align: left;
+}
+
+.cbp_tmtimeline .yellow {
+
+  .cbp_tmlabel a {
+    color: #444; 
+  }
+
+  .fa-times-circle {
+    position: absolute; 
+    right: 0; 
+    top: 0; 
+    padding: 7px 5px 0; 
+    cursor: pointer; 
+  }
+}

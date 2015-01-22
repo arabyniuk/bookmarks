@@ -31,9 +31,13 @@
                   <%= f.password_field :password_confirmation, autocomplete: "off" %>
                 </div>
               
-                <div class="actions">
-                  <a href="/users/auth/twitter"><i class="fa fa-twitter-square fa-3x"></i>
-                  <%= link_to "Sign in", '#login-tab', 'data-toggle' => 'tab' %>
+                <div class="actions row">
+                  <div class="col-md-6 lefted">
+                    <a href="/users/auth/twitter"><i class="fa fa-twitter-square fa-3x"></i>
+                  </div>
+                  <div class="col-md-6 righted">
+                    <%= link_to "Sign in", '#login-tab', 'data-toggle' => 'tab', class: 'btn btn-default navbar-btn' %>
+		  </div>
                 </div>
               </div>
           </div>
@@ -68,9 +72,15 @@
                     <%= f.label :remember_me %>
                   </div>
                 <% end -%>
-                <a href="/users/auth/twitter"><i class="fa fa-twitter-square fa-3x"></i>
-                <%= link_to "Sign up", '#register-tab', 'data-toggle' => 'tab' %> | 
-                <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+                <div class="row">
+                <div class="col-md-4">
+                  <a href="/users/auth/twitter"><i class="fa fa-twitter-square fa-3x"></i>
+                  <%= link_to "Sign up", '#register-tab', 'data-toggle' => 'tab', class: 'pull-right navbar-btn' %>
+                </div>
+                <div class="col-md-8 centered">
+                  <%= link_to "Forgot your password?", new_password_path(resource_name), class: 'navbar-btn' %>
+                </div>
+                </div>
               </div>
           </div>
           <div class="modal-footer">
