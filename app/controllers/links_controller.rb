@@ -70,7 +70,7 @@ class LinksController < ApplicationController
 
   def set_current_link
     if user_signed_in?
-      #WeeklyNotifier.received(current_user).deliver
+      WeeklyNotifier.received(current_user).deliver
       path = request.original_fullpath.gsub(/^\//, "")
       subdomain = request.subdomain
       if !subdomain.empty? || !path.empty?
@@ -91,7 +91,6 @@ class LinksController < ApplicationController
           link = Link.new({url: path, title: title, user_id: current_user.id })
           link.list_id = list.id unless subdomain.empty?
           link.save
-          #WeeklyNotifier.delay(run_at: 5.minutes.from_now).received(current_user)
         end
         redirect_to root_url(subdomain: false)
       end

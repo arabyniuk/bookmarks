@@ -8,7 +8,7 @@ class WeeklyNotifier < ActionMailer::Base
   #
   def received(user)
     @greeting = "Hi"
-    @links = user.links.last_week
+    @links = user.links.last_week.order('list_id DESC')
     mail(to: user.email, subject: "hello world!!")
   end
 end

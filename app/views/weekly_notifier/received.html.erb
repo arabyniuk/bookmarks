@@ -1,16 +1,31 @@
-<h1>Bookmarks</h1>
-
-<br>
+<h3 style="font-size:18px;font-weight:bold;margin-top:0;text-align:center;">
+  <%= @links.size %> new bookmarks
+</h3>
 <hr>
 
-<h2>
-  <%= @links.size %> new bookmarks
-</h2>
+<table style="border: 1px solid #ddd; border-spacing: 0;">
 
+  <thead>
+    <tr>
+      <th style="border: 1px solid #ddd; background: #006a72; padding: 8px; color: #fff;">Link</th>
+      <th style="border: 1px solid #ddd; background: #006a72; padding: 8px; color: #fff;">Category</th>
+    </tr>
+  </thead>
+
+<tbody>
 <% @links.each do |link| %>
-  <a href="http://<%= link.url %>" target="_blank" style="font-family: Tahoma, Arial, Helvetica, sans-serif; font-size: 14px; text-decoration:underline;">
-  <font face="Tahoma, Arial, Helvetica, sans-serif" style="font-size:14px;" size="3">
-    <%= link.title %>
-  </font>
-  </a><br>
+  <tr>
+    <td style="border-top: 1px solid #ddd; padding: 8px;">
+      <a href="http://<%= link.url %>" target="_blank" style="color:rgb(24,118,172); font-family: Tahoma, Arial, Helvetica, sans-serif; font-size: 12px; text-decoration:underline;">
+      <font face="Tahoma, Arial, Helvetica, sans-serif" style="font-size:14px;" size="3">
+        <%= link.title %>
+      </font>
+      </a>
+    </td>
+    <td style="border-top: 1px solid #ddd; border-left: 1px solid #ddd; padding: 8px;">
+      <%= link.list.name if link.list %>
+    </td>
+  </tr>
 <% end %>
+</tbody>
+</table>

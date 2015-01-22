@@ -11,8 +11,7 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
   
-  #  get '*path', to: 'links#set_current_link'
-  #get '*path', to: 'links#set_current_link'
+  get '*path', to: 'links#set_current_link', constraints: lambda { |r| r.subdomain != "tweet" }
     
   constraints(Subdomain) do
     get '/', to: 'links#set_current_link'
