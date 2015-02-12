@@ -9,8 +9,8 @@ class LinksController < ApplicationController
   # GET /links.json
   def index
     if user_signed_in?
-      @links = Link.where(user_id: current_user.id)
-      @lists = List.where(user_id: current_user.id)
+      @links = Link.where(user_id: current_user.id).order('created_at DESC')
+      @categories = Category.where(user_id: current_user.id)
     end
   end
 
@@ -70,15 +70,15 @@ class LinksController < ApplicationController
 
   def set_current_link
     if user_signed_in?
-      WeeklyNotifier.received(current_user).deliver
+      #WeeklyNotifier.received(current_user).deliver
       path = request.original_fullpath.gsub(/^\//, "")
       subdomain = request.subdomain
       if !subdomain.empty? || !path.empty?
-        unless subdomain.empty?
-          list = List.where(name: subdomain, user_id: current_user.id).first
-          if list.nil?
-             list = List.new({name: subdomain, user_id: current_user.id})
-             list.save
+        unless subdomain.empty? || subdomain =~ /www|tweet/
+          category = Category.where(name: subdomain, user_id: current_user.id).first
+          if category.nil?
+             category = Category.new({name: subdomain, user_id: current_user.id})
+             category.save
           end
         end
         unless path.empty?
@@ -89,7 +89,7 @@ class LinksController < ApplicationController
           end
           path = path.gsub(/^(h.*?\/+)/, "")
           link = Link.new({url: path, title: title, user_id: current_user.id })
-          link.list_id = list.id unless subdomain.empty?
+          link.category_id = category.id unless subdomain.empty? || subdomain =~ /www|tweet/
           link.save
         end
         redirect_to root_url(subdomain: false)
@@ -106,9 +106,9 @@ class LinksController < ApplicationController
       @link = Link.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white category through.
     def link_params
-      params.require(:link).permit(:url, :title, :list_id)
+      params.require(:link).permit(:url, :title, :category_id)
     end
 
 end

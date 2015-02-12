@@ -2,10 +2,10 @@
 
   <div class="content">
     <span>Category: </span>
-    <select id="search-list" name="list">
+    <select id="search-list" name="category">
       <option></option>
-      <% @lists.each do |list| %>
-        <option><%= list.name %></option>
+      <% @categories.each do |category| %>
+        <option><%= category.name %></option>
       <% end %>
     </select>
 
@@ -22,7 +22,7 @@
         <% @links.each do |link| %>
         <tr>
           <td><a href="http://<%= link.url %>" style="background-image:url(https://www.google.com/s2/favicons?domain=<%= link.url.match(/^.*\.[a-z]{2,5}/).to_s %>)" target="_blank"><%= link.title %></a></td>
-          <td><%= link.list.name if link.list %></td>
+          <td><%= link.category.name if link.category %></td>
           <td><%= link.created_at.strftime("%d %b %y") %></td>
           <td><%= link_to 'Edit', edit_link_path(link) %> | <%= link_to 'Destroy', link, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         </tr>
@@ -31,8 +31,10 @@
     </table>
   </div>
 
-<%= link_to 'New Link', new_link_path %>
-
+<div class="row" style="clear: both; margin-top: 15px; padding: 0 15px;">
+  <%= link_to 'New Link', new_link_path, class: 'pull-left', data: { no_turbolink: true } %>
+  <%= link_to 'Categories', categories_path, class: 'pull-right', data: { no_turbolink: true } %>
+</div>
 <script>
 $('table').dynatable({
   table: {
@@ -47,29 +49,20 @@ $('table').dynatable({
 </script>
 
 <% else %>
-  <div class="projects isotope" style="position: relative; overflow: hidden; display: block; height: 894px;">
-    <div class="col-xs-12 col-sm-6 col-md-3 element category01 isotope-item" data-category="category01" style="position: absolute; left: 0px; top: 0px; transform: translate3d(0px, 0px, 0px); opacity: 1;">
-      <div class="hover_img">
-        <a href="img/portfolio/1.jpg" rel="prettyPhoto[portfolio1]">
-	<%= image_tag("1.jpg") %>
-        </a>
-     </div>  
-         <div class="item_description">
-            <a href="single_portfolio.html"><span>Item Link</span></a><br>
-      				item description
-         </div>                                    
-     </div>
+
+  <%= render 'preview' %>
+
+  <div class="center">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg signup-modal-link">
+      Register
+    </button>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary btn-lg login-modal-link">
+      Login
+    </button>
   </div>
-
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary btn-lg signup-modal-link">
-    Register
-  </button>
-
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary btn-lg login-modal-link">
-    Login
-  </button>
 
   <%= render 'modal' %>
 

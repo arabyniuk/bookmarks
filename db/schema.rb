@@ -13,6 +13,15 @@
 
 ActiveRecord::Schema.define(version: 20150122132726) do
 
+  create_table "categories", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+  end
+
+  add_index "categories", ["user_id"], name: "index_categories_on_user_id"
+
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
     t.integer  "attempts",   default: 0, null: false
@@ -32,22 +41,13 @@ ActiveRecord::Schema.define(version: 20150122132726) do
   create_table "links", force: true do |t|
     t.string   "url"
     t.string   "title"
-    t.integer  "list_id"
+    t.integer  "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
   end
 
   add_index "links", ["user_id"], name: "index_links_on_user_id"
-
-  create_table "lists", force: true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "user_id"
-  end
-
-  add_index "lists", ["user_id"], name: "index_lists_on_user_id"
 
   create_table "tweets", force: true do |t|
     t.string   "body"

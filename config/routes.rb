@@ -6,10 +6,8 @@ Rails.application.routes.draw do
   get 'main/index'
 
   resources :links
-  resources :lists
+  resources :categories
 
-  # The priority is based upon order of creation: first created -> highest priority.
-  # See how all your routes lay out with "rake routes".
   
   get '*path', to: 'links#set_current_link', constraints: lambda { |r| r.subdomain != "tweet" }
     
@@ -18,11 +16,7 @@ Rails.application.routes.draw do
     get '*path', to: 'links#set_current_link'
   end
 
-  #get '/' => 'twitter#index', :constraints => { :subdomain => 'tweet' }
-
   constraints(subdomain: 'tweet') do
-    #get '/', to: 'twitter#index'
-    #get '*path', to: 'twitter#index'
     resources :twitter
   end
 

@@ -1,0 +1,21 @@
+/* line 7, /home/andrii/work/book_marker/app/assets/stylesheets/links.css.scss */
+.table-links tr td:first-child a {
+  background-repeat: no-repeat;
+  padding-left: 20px;
+}
+/* line 14, /home/andrii/work/book_marker/app/assets/stylesheets/links.css.scss */
+.table-links th:first-child a {
+  padding-left: 20px;
+}
+/* line 17, /home/andrii/work/book_marker/app/assets/stylesheets/links.css.scss */
+.table-links thead a {
+  color: #fff;
+}
+/* line 24, /home/andrii/work/book_marker/app/assets/stylesheets/links.css.scss */
+.table-links tbody tr td:first-child a {
+  color: #555;
+}
+/* line 25, /home/andrii/work/book_marker/app/assets/stylesheets/links.css.scss */
+.table-links tbody tr td:first-child a:hover {
+  color: #000;
+}

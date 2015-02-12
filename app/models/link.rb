@@ -1,5 +1,5 @@
 class Link < ActiveRecord::Base
-  belongs_to :list
+  belongs_to :category
   belongs_to :user
   validates :title, presence: true
   

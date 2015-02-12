@@ -11,8 +11,8 @@
     <%= f.text_field :title %>
   </div>
   <div class="field">
-    <%= f.label :list_id %><br>
-    <%= f.collection_select :list_id, current_user.lists, :id, :name  %>
+    <%= f.label :category_id %><br>
+    <%= f.collection_select :category_id, current_user.categories, :id, :name  %>
   </div>
   <div class="actions">
     <%= f.submit class: 'btn default' %>

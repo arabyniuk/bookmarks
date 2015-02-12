@@ -24,13 +24,28 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
-gem 'pry'
-gem 'mechanize'
-gem 'devise'
-gem 'omniauth-twitter'
-gem 'twitter'
-gem 'delayed_job_active_record'
+gem 'mechanize', '2.7.3'
+gem 'devise', '3.4.1'
+gem 'omniauth-twitter', '1.1.0'
+gem 'twitter', '5.13.0'
+gem 'delayed_job_active_record', '4.0.3'
+gem 'unicorn'
 
+group :development, :test do
+  gem 'rspec'
+  gem 'rspec-rails', '3.1.0'
+  gem 'pry-rails'
+  gem 'factory_girl_rails'
+end
+
+group :test do
+  gem 'spork', '0.9.2'
+  gem 'capybara'
+end
+
+group :production do
+  gem 'pg'
+end
 # gem 'bcrypt', '~> 2.1.7'
 # Use unicorn as the app server
 
