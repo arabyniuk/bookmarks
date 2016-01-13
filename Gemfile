@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.8'
 # Use sqlite3 as the database for Active Record
@@ -25,17 +24,24 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
 gem 'mechanize', '2.7.3'
-gem 'devise', '3.4.1'
-gem 'omniauth-twitter', '1.1.0'
-gem 'twitter', '5.13.0'
+gem 'devise'
+#gem 'omniauth'
+gem 'omniauth-twitter'
+gem 'twitter'
 gem 'delayed_job_active_record', '4.0.3'
-gem 'unicorn'
 
 group :development, :test do
   gem 'rspec'
   gem 'rspec-rails', '3.1.0'
   gem 'pry-rails'
   gem 'factory_girl_rails'
+end
+
+gem 'capistrano', require: false, group: :development
+group :development do
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
+  gem 'capistrano-rbenv'
 end
 
 group :test do
@@ -49,10 +55,7 @@ end
 # gem 'bcrypt', '~> 2.1.7'
 # Use unicorn as the app server
 
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
+gem 'unicorn'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]

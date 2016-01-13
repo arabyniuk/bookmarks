@@ -1,4 +1,4 @@
-rvm use 2.1.2@bookmaker
+rvm use 2.2.2@bookmaker
 set undodir=~/.vim/undodir
 set undofile
 set undolevels = 1000 "maximum number of changes that can be undone

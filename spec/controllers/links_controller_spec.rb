@@ -1,25 +1,17 @@
 require 'rails_helper'
 
-#describe LinksController, :type => :request do
-describe LinksController do
-  login_user   
-  #before { visit new_user_session_path }
+describe LinksController, type: :request do
+  it "redirect to main page" do
+    visit "/ali"
+    page.should have_content 'Bookmarks'
+  end
 
-  #describe "set current link" do
+  describe "with user session" do
+    before { sign_in_as_a_user }
 
-  #  before do
-  #    user = FactoryGirl.create :user
-  #    user.save!
-  #    fill_in "Email", with: user.email
-  #    fill_in "Password", with: user.password
-  #    click_on 'Log in'
-  #  end
-  #  it { page.should have_content 'Signed in successfully.' }
-
-    it "should return something" do
-      #get 'http://lvh.me:3000/http://google.com'
-      visit root_path
-      page.should have_content 'Signed in successfully.'
+    it "bla" do
+      visit "/"
+      page.should have_content 'Category'
     end
-  #end
+  end
 end

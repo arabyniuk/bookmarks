@@ -2,15 +2,15 @@ class TwitterController < ApplicationController
   layout 'twitter'
 
   def index
-      if user_signed_in? && current_user.provider == 'twitter'
-        @tweets = Tweet.order('created_at DESC').limit(20)
-        tweet
-      else 
-        flash[:notice] = 'You are not authorized as twitter user' 
-        redirect_to root_url(subdomain: false)
-      end
+    if user_signed_in? && current_user.provider == 'twitter'
+      @tweets = Tweet.order('created_at DESC').limit(20)
+      tweet
+    else
+      flash[:notice] = 'You are not authorized as twitter user'
+      redirect_to root_url(subdomain: false)
+    end
   end
-  
+
   def destroy
     @tweet = Tweet.find(params[:id])
     @delayed_job_id = @tweet.delayed_job_id
@@ -38,7 +38,6 @@ class TwitterController < ApplicationController
         tweet.save
         redirect_to root_url(subdomain: 'tweet')
       end
-    end 
+    end
   end
-  
 end
