@@ -1,16 +1,15 @@
-<h1>Bookmarks</h1>
+<%= render 'links/preview' %>
 
-<select>
-<% @categories.each do |category| %>
-  <option><%= category.name%></option>
-<% end %>
-</select>
+<div class="center">
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary btn-lg signup-modal-link">
+    Register
+  </button>
 
-<ul>
-  <% @links.each do |link| %>
-    <li>
-      url: <%= link.url %><br/>
-      title: <%= link.title %>
-    </li>
-  <% end %>
-</ul>
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary btn-lg login-modal-link">
+    Login
+  </button>
+</div>
+
+<%= render 'links/modal' %>

@@ -1,6 +1,7 @@
 require 'spec_helper'
+require 'ostruct'
 
-feature 'Sign in via Twitter' do
+feature "Sign in via Twitter" do
   background do
     User.create(provider: 'twitter',
                 uid: '123545',
@@ -8,24 +9,38 @@ feature 'Sign in via Twitter' do
     visit '/users/sign_in'
   end
 
-  scenario 'login page' do
+  scenario "login page" do
     expect(page).to have_content("Sign in with Twitter")
   end
 
-  scenario 'click login via twitter' do
+  scenario "click login via twitter" do
     mock_auth_hash
     click_link 'Sign in with Twitter'
 
     expect(page).to have_content('Log out')
   end
 
-  scenario 'click login via twitter' do
-    mock_auth_hash
-    click_link 'Sign in with Twitter'
-    visit 'http://tweet.lvh.me:9887/'
-    expect(page).to have_content('Twitter list')
+  feature "twitter auth" do
+    background do
+      mock_auth_hash
+      click_link "Sign in with Twitter"
+      visit "http://tweet.lvh.me:9887/"
+      struck_obj = OpenStruct.new(id: 1)
+      allow_any_instance_of(TwitterController).to receive(:twitter_job).and_return(struck_obj)
+    end
 
-    #visit '/some_test_text'
-    #expect(Tweet.all.size).to eq(1)
+    scenario "click login via twitter" do
+      expect(page).to have_content('Twitter list')
+    end
+
+    scenario "click login via twitter" do
+      visit 'http://tweet.lvh.me:9887/some_message'
+      expect(Tweet.all.size).to eq(1)
+    end
+
+    scenario "click login via twitter" do
+      visit 'http://tweet.lvh.me:9887/some_message&d=40'
+      expect(Tweet.last.delay).to be > Time.now
+    end
   end
 end

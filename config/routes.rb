@@ -2,18 +2,15 @@ require 'subdomain'
 Rails.application.routes.draw do
 
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
-  
-  get 'main/index'
 
   resources :links
   resources :categories
 
-  
-  get '*path', to: 'links#set_current_link', constraints: lambda { |r| r.subdomain != "tweet" }
-    
+  get '*path', to: 'links#obtain_folder_path', constraints: lambda { |r| r.subdomain != "tweet" }
+
   constraints(Subdomain) do
-    get '/', to: 'links#set_current_link'
-    get '*path', to: 'links#set_current_link'
+    get '/', to: 'links#obtain_folder_path'
+    get '*path', to: 'links#obtain_folder_path'
   end
 
   constraints(subdomain: 'tweet') do
@@ -22,7 +19,7 @@ Rails.application.routes.draw do
 
   get '*path', to: 'twitter#index', constraints: { subdomain: 'tweet' }
   get '/', to: 'twitter#index', constraints: { subdomain: 'tweet' }
-  
+
   # You can have the root of your site routed with "root"
   root 'links#index'
 

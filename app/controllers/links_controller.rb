@@ -1,9 +1,9 @@
 class LinksController < ApplicationController
   before_action :set_link, only: [:show, :edit, :update, :destroy]
-  #before_action :set_current_link
-  #before_action :authenticate_user!, only: [:index]
+  #before_action :authenticate_user!
   #skip_before_action :authenticate_user!, only: [:set_current_link]
 
+  include PathFormatter
 
   # GET /links
   # GET /links.json
@@ -11,6 +11,9 @@ class LinksController < ApplicationController
     if user_signed_in?
       @links = Link.where(user_id: current_user.id).order('created_at DESC')
       @categories = Category.where(user_id: current_user.id)
+    else
+      flash[:notice] = "You are not authorized for this action."
+      #redirect_to root_url(subdomain: false)
     end
   end
 
@@ -68,47 +71,52 @@ class LinksController < ApplicationController
     end
   end
 
-  def set_current_link
-    if user_signed_in?
-      #WeeklyNotifier.received(current_user).deliver
-      path = request.original_fullpath.gsub(/^\//, "")
-      subdomain = request.subdomain
-      if !subdomain.empty? || !path.empty?
-        unless subdomain.empty? || subdomain =~ /www|tweet/
-          category = Category.where(name: subdomain, user_id: current_user.id).first
-          if category.nil?
-             category = Category.new({name: subdomain, user_id: current_user.id})
-             category.save
-          end
-        end
-        unless path.empty?
-          begin
-            title = Mechanize.new.get(path).title
-          rescue Exception => e
-            flash[:notice] = e.message
-          end
-          path = path.gsub(/^(h.*?\/+)/, "")
-          link = Link.new({url: path, title: title, user_id: current_user.id })
-          link.category_id = category.id unless subdomain.empty? || subdomain =~ /www|tweet/
-          link.save
-        end
-        redirect_to root_url(subdomain: false)
-      end
-    else
-      flash[:notice] = "You are not authorized for this action."
-      redirect_to root_url(subdomain: false)
+  def obtain_folder_path
+    #WeeklyNotifier.received(current_user).deliver
+    return nil unless subdomain || folder_path
+    category = category_publish || {}
+
+    link_publish(category) unless folder_path.blank?
+    redirect_to root_url(subdomain: false)
+  end
+
+  private
+
+  def link_publish(category)
+    begin
+      link = Link.new(url: folder_path_without_prefix,
+                       title: folder_path_title,
+                       user_id: current_user.id,
+                       category_id: category.fetch(:id, nil) )
+
+      link.save
+    rescue Exception => e
+      flash[:notice] = e.message
     end
   end
-  
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_link
-      @link = Link.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white category through.
-    def link_params
-      params.require(:link).permit(:url, :title, :category_id)
-    end
+  def category_publish
+    return nil if fit_subdomain?
+    category = Category.new(name: subdomain, user_id: current_user.id)
+    category.save
+    category
+  end
 
+  def fit_subdomain?
+    fit_folder_path_subdomain? || existing_category?(subdomain)
+  end
+
+  def existing_category?(subdomain)
+    Category.subdomain(subdomain, current_user.id).any?
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_link
+    @link = Link.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white category through.
+  def link_params
+    params.require(:link).permit(:url, :title, :category_id)
+  end
 end

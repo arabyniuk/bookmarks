@@ -3,4 +3,9 @@ class Category < ActiveRecord::Base
 
   has_many :links
   belongs_to :user
+
+  def self.subdomain(subdomain, user_id)
+    where(name: subdomain,
+          user_id: user_id)
+  end
 end

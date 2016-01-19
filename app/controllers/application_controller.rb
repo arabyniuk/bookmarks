@@ -3,10 +3,13 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
- private
+  def twitter_user_signed_in?
+    user_signed_in? && current_user.provider == 'twitter'
+  end
 
- def after_sign_out_path_for(resource_or_scope)
-   root_url(subdomain: false)
- end
+  private
 
+  def after_sign_out_path_for(resource_or_scope)
+    root_url(subdomain: false)
+  end
 end

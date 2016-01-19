@@ -47,6 +47,7 @@ end
 group :test do
   gem 'spork', '0.9.2'
   gem 'capybara'
+  gem 'database_cleaner'
 end
 
 group :production do
